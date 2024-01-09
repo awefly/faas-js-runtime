@@ -15,7 +15,7 @@ test('Returns HTTP error code if a caught error has one', t => {
     throw error;
   })
   .then(server => {
-      request(server)
+      request(server.server)
         .post('/')
         .expect(451)
         .expect('Content-type', /text/)
@@ -33,7 +33,7 @@ test('Prints an error message when an exception is thrown', t => {
   const func = _ => { throw new Error('This is the error message'); };
   start(func)
     .then(server => {
-      request(server)
+      request(server.server)
         .post('/')
         .expect(500)
         .end((err, resp) => {

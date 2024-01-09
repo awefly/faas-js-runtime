@@ -30,7 +30,7 @@ for (const tc of testCases) {
     const message = HTTP.binary(event);
     start(func)
       .then(server => {
-      request(server)
+      request(server.server)
         .post('/')
         .send(message.body)
         .set(message.headers)

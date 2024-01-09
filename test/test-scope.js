@@ -61,7 +61,7 @@ for (const tt of tests.arrowFunctionTests) {
 }
 
 function checkHasGlobal(server, t, expected) {
-  request(server)
+  request(server.server)
   .get('/')
   .expect(200)
   .end((err, res) => {
@@ -73,7 +73,7 @@ function checkHasGlobal(server, t, expected) {
 }
 
 function checkIsFrozen(server, t, expected) {
-  request(server)
+  request(server.server)
   .get('/')
   .expect(200)
   .end((err, res) => {

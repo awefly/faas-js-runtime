@@ -1,4 +1,4 @@
-import { Server } from 'http';
+import { FastifyInstance } from 'fastify';
 import { CloudEventFunction, HTTPFunction, InvokerOptions, Function } from './lib/types';
 import { LogLevel } from 'fastify';
 
@@ -14,7 +14,7 @@ export interface Config {
 // start starts the server for the given function.
 export declare const start: {
   // eslint-disable-next-line no-unused-vars
-  (func: Invokable | Function, options?: InvokerOptions): Promise<Server>
+  (func: Invokable | Function, options?: InvokerOptions): Promise<FastifyInstance>
 };
 
 export declare const defaults: {

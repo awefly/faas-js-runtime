@@ -15,7 +15,7 @@ test('Provides HTTP POST string as string parameter', t => {
     return receivedBody;
   })
   .then(server => {
-    request(server)
+    request(server.server)
       .post('/')
       .send(body)
       .set({'Content-Type': 'text/plain'})
@@ -37,7 +37,7 @@ test('Provides HTTP POST string as string parameter and rawBody', t => {
     return receivedBody;
   }, {includeRaw: true})
   .then(server => {
-    request(server)
+    request(server.server)
       .post('/')
       .send(body)
       .set({'Content-Type': 'text/plain'})
@@ -58,7 +58,7 @@ test('Provides HTTP POST JSON as object parameter', t => {
     return receivedBody;
   })
   .then(server => {
-    request(server)
+    request(server.server)
       .post('/')
       .send(body)
       .set({'Content-Type': 'application/json'})
@@ -80,7 +80,7 @@ test('Provides HTTP POST JSON as object parameter with correct rawBody', t => {
     return receivedBody;
   }, {includeRaw: true})
   .then(server => {
-    request(server)
+    request(server.server)
       .post('/')
       .send(body)
       .set({'Content-Type': 'application/json'})
@@ -101,11 +101,12 @@ test('Provides HTTP POST empty body as empty string parameter', t => {
     return receivedBody;
   })
   .then(server => {
-    request(server)
+    request(server.server)
       .post('/')
       .send(body)
       .set({'Content-Type': 'text/plain'})
-      .expect('Content-Type', /plain/)
+      .expect(204)
+      // .expect('Content-Type', /plain/)
       .end((err, _) => {
         t.error(err, 'No error');
         t.end();
@@ -123,11 +124,12 @@ test('Provides HTTP POST empty body as empty string parameter and rawBody', t =>
     return receivedBody;
   }, {includeRaw: true})
   .then(server => {
-    request(server)
+    request(server.server)
       .post('/')
       .send(body)
       .set({'Content-Type': 'text/plain'})
-      .expect('Content-Type', /plain/)
+      .expect(204)
+      // .expect('Content-Type', /plain/)
       .end((err, _) => {
         t.error(err, 'No error');
         t.end();

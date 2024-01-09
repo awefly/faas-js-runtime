@@ -13,7 +13,7 @@ test('Provides HTTP request headers with the context parameter', t => {
     t.equal(typeof context.headers, 'object');
   })
   .then(server => {
-    request(server)
+    request(server.server)
       .post('/')
       .end((err, _) => {
         t.error(err, 'No error');
@@ -29,7 +29,7 @@ test('Provides HTTP request body with the context parameter', t => {
     t.deepEqual(context.body, { lunch: 'tacos' });
   })
   .then(server => {
-    request(server)
+    request(server.server)
       .post('/')
       .send('lunch=tacos')
       .end((err, _) => {
@@ -47,7 +47,7 @@ test('Provides HTTP request rawBody with the context parameter', t => {
     t.equal(context.rawBody, 'lunch=tacos');
   }, {includeRaw: true})
   .then(server => {
-    request(server)
+    request(server.server)
       .post('/')
       .send('lunch=tacos')
       .end((err, _) => {
@@ -63,7 +63,7 @@ test('Provides HTTP request query parameters with the context parameter', t => {
   start(func)
     .then(server => {
       t.plan(3);
-      request(server)
+      request(server.server)
         .get('/?lunch=tacos&supper=burgers')
         .expect(200)
         .expect('Content-Type', /json/)
@@ -82,7 +82,7 @@ test('Provides HTTP method information with the context parameter', t => {
   let context;
   start(c => context = c)
     .then(server => {
-      request(server)
+      request(server.server)
         .get('/')
         .end((err, _) => {
           t.error(err, 'No error');
@@ -98,7 +98,7 @@ test('Provides HTTP version information with the context parameter', t => {
   let context;
   start(c => context = c)
     .then(server => {
-      request(server)
+      request(server.server)
         .get('/')
         .end((err, _) => {
           t.error(err, 'No error');

@@ -59,7 +59,7 @@ async function requestMetricsAndValidate(server, t, expected) {
 // A helper function that calls a server endpoint with a
 // GET request and reports any error
 async function callEndpointNoError(server, endpoint, t) {
-  return request(server).get(endpoint).catch(t.error);
+  return request(server.server).get(endpoint).catch(t.error);
 }
 
 // A helper function that will test if the /metrics endpoint

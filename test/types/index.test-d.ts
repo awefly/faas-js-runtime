@@ -1,8 +1,8 @@
 import { expectType } from 'tsd';
 
-import { Server } from 'http';
 import { start, Invokable, Context, LogLevel, InvokerOptions } from '../../index';
 import { CloudEvent } from 'cloudevents';
+import { FastifyInstance } from 'fastify';
 
 const fn: Invokable = function(
   context: Context,
@@ -20,4 +20,4 @@ const options: InvokerOptions = {
   path: './'
 };
 
-expectType<Promise<Server>>(start(fn, options));
+expectType<Promise<FastifyInstance>>(start(fn, options));

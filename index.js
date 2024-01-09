@@ -66,7 +66,7 @@ async function start(func, options) {
  * @param {*} options - Options to configure the server
  * @param {string} options.logLevel - The log level to use
  * @param {number} options.port - The port to listen on
- * @returns {Promise<http.Server>} The server that was started
+ * @returns {Promise<FastifyInstance>} The server that was started
  */
 async function __start(func, options) {
   // Load a func.yaml file if it exists
@@ -85,7 +85,7 @@ async function __start(func, options) {
       port: config.port,
       host: '::',
     });
-    return server.server;
+    return server;
   } catch (err) {
     console.error('Error starting server', err);
     process.exit(1);
@@ -121,15 +121,18 @@ function initializeServer(config) {
     });
   }
 
-  // Give the Function an opportunity to clean up before the process exits
-  shutdown(async _ => {
-    if (typeof config.shutdown === 'function') {
+  if (typeof config.shutdown === 'function') {
+    server.addHook('onClose', async() => {
       const shutdownRet = config.shutdown();
       if (isPromise(shutdownRet)) {
         await shutdownRet;
       }
-    }
-    server.close();
+    });
+  }
+
+  // Give the Function an opportunity to clean up before the process exits
+  shutdown(async _ => {
+    await server.close();
     process.exit(0);
   });
 

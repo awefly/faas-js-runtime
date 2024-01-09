@@ -61,7 +61,7 @@ test('Bubbles up any exceptions thrown by init()', t => {
 });
 
 test('Calls shutdown after the server has stopped', async t => {
-  t.plan(1);
+  t.plan(2);
   let shutdownCalled = false;
   const server = await start(
     {
@@ -73,16 +73,12 @@ test('Calls shutdown after the server has stopped', async t => {
     defaults
   );
   t.ok(!shutdownCalled, 'shutdown was not called before server.close()');
-  return new Promise(resolve => {
-    // TODO: It would be nice to check for the shutdown call here
-    // but it's not clear how to do that if we are only hooking on
-    // signal interrupts.
-    server.close(resolve);
-  });
+  await server.close();
+  t.ok(shutdownCalled, 'shutdown was called after server.close()');
 });
 
 test('Calls async shutdown after the server has stopped', async t => {
-  t.plan(1);
+  t.plan(2);
   let shutdownCalled = false;
   const server = await start(
     {
@@ -94,12 +90,8 @@ test('Calls async shutdown after the server has stopped', async t => {
     defaults
   );
   t.ok(!shutdownCalled, 'shutdown was not called before server.close()');
-  return new Promise(resolve => {
-    // TODO: It would be nice to check for the shutdown call here
-    // but it's not clear how to do that if we are only hooking on
-    // signal interrupts.
-    server.close(resolve);
-  });
+  await server.close();
+  t.ok(shutdownCalled, 'shutdown was called after server.close()');
 });
 
 test('Liveness endpoint can be provided', t => {
@@ -108,7 +100,7 @@ test('Liveness endpoint can be provided', t => {
     liveness: _ => 'I am alive',
   }).then(server => {
     t.plan(2);
-    request(server)
+    request(server.server)
       .get('/health/liveness')
       .expect(200)
       .expect('Content-type', /text/)
@@ -131,7 +123,7 @@ test('Liveness route can be provided', t => {
     liveness,
   }).then(server => {
     t.plan(2);
-    request(server)
+    request(server.server)
       .get('/alive')
       .expect(200)
       .expect('Content-type', /text/)
@@ -150,7 +142,7 @@ test('Readiness endpoint can be provided', t => {
     readiness: _ => 'I am ready',
   }).then(server => {
     t.plan(2);
-    request(server)
+    request(server.server)
       .get('/health/readiness')
       .expect(200)
       .expect('Content-type', /text/)
@@ -173,7 +165,7 @@ test('Readiness route can be provided', t => {
     readiness,
   }).then(server => {
     t.plan(2);
-    request(server)
+    request(server.server)
       .get('/ready')
       .expect(200)
       .expect('Content-type', /text/)

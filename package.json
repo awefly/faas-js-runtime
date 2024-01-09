@@ -60,8 +60,5 @@
   "tsd": {
     "directory": "test/types",
     "typingsFile": "index.d.ts"
-  },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
   }
 }
